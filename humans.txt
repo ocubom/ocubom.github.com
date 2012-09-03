@@ -1,0 +1,20 @@
+
+                  The humans responsible & technology colophon
+                             (http://humanstxt.org)
+
+/* TEAM */
+
+Owner:    Oscar Cubo Medina
+Site:     http://ocubom.github.com/
+Twitter:  @ocubom (http://twitter.com/ocubom)
+Location: Madrid, Spain
+
+/* Site */
+
+Last update: 2012/09/03
+Language:    English / Castellano
+Standards:   HTML5, CSS3
+Components:  jQuery, Modernizr, RequireJs
+Software:    Git, Inkscape, Paint.NET, Notepad++, Sublime Text, WinSCP
+Tool chain:  Nanoc, Compass & SASS, Closure Compiler, Html Compressor,
+             YUI Compressor

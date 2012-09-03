@@ -1,0 +1,1 @@
+jQuery.timeago.settings.strings={prefixAgo:"hace",prefixFromNow:"dentro de",suffixAgo:"",suffixFromNow:"",seconds:"menos de un minuto",minute:"un minuto",minutes:"unos %d minutos",hour:"una hora",hours:"%d horas",day:"un d\u00eda",days:"%d d\u00edas",month:"un mes",months:"%d meses",year:"un a\u00f1o",years:"%d a\u00f1os"};

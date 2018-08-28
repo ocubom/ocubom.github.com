@@ -1,0 +1,86 @@
+/* custom.css */
+
+
+html {
+    hyphens: auto;
+}
+h1, h2, h3, h4, h5, h6 {
+    hyphens: none;
+}
+
+article p {
+    text-align: justify;
+}
+
+footer {
+    margin-bottom: 1rem;
+}
+
+.fa { margin-right: 0.3em; }
+
+.article-date time  { margin-left: 0.3em; }
+
+/*
+ * Fix lead size
+ */
+.lead {
+    font-size: 1.32em;
+    text-align: left;
+}
+
+
+/*
+ * Fix footer space when used inside blockquotes
+ */
+blockquote footer {
+    margin: 0;
+    padding: 0;
+}
+
+/**
+ * Copyright notices
+ */
+
+.copyright-notice {
+    font-size: .85em;
+    color: #7a7a7a;
+    margin: auto 2.5rem;
+}
+
+.copyright-notice p {
+    display: inline-block;
+    text-align: left;
+    border: 0;
+}
+
+
+/**
+ * Sidenotes
+ */
+
+aside.sidenote {
+    font-style:italic;
+    font-weight:lighter;
+    font-size:.85em;
+    color: #7a7a7a;
+    width:85%;
+    margin:1em 0;
+    hyphens: none;
+}
+
+aside.sidenote p {
+    margin: 0.5em;
+    padding: 0em;
+}
+
+@media(min-width:25em) {
+    aside.sidenote {
+        width:32.20339%;
+        margin:1em
+    }
+    aside.sidenote:nth-child(2n) { float:left; border-right: 0.125em solid #e5e5e5; }
+    aside.sidenote:nth-child(2n) p { text-align:right; }
+
+    aside.sidenote:nth-child(2n+1) { float:right; border-left: 0.25em solid #e5e5e5; }
+    aside.sidenote:nth-child(2n+1) p { text-align:left; }
+}

@@ -1,1 +1,0 @@
-define(function(){return{track:function(d){var b=window._gaq=b||[],a=document.createElement("script"),c=document.getElementsByTagName("script")[0];b.push(["_setAccount",d]);b.push(["_trackPageview"]);a.type="text/javascript";a.async=!0;a.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";c.parentNode.insertBefore(a,c)}}});

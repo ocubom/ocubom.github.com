@@ -4,17 +4,33 @@
 
 /* TEAM */
 
-Owner:    Oscar Cubo Medina
-Site:     http://ocubom.github.com/
-Twitter:  @ocubom (http://twitter.com/ocubom)
-Location: Madrid, Spain
+    Oscar Cubo Medina - One Man Band
+    Site:     http://ocubom.github.com
+    Twitter:  @ocubom (http://twitter.com/ocubom)
+    Location: Madrid, ES
 
-/* Site */
+/* THANKS */
 
-Last update: 2012/09/03
-Language:    English / Castellano
-Standards:   HTML5, CSS3
-Components:  jQuery, Modernizr, RequireJs
-Software:    Git, Inkscape, Paint.NET, Notepad++, Sublime Text, WinSCP
-Tool chain:  Nanoc, Compass & SASS, Closure Compiler, Html Compressor,
-             YUI Compressor
+    Hugo developers: http://gohugo.io
+    Academic Theme developers: http://http://sourcethemes.com/academic/
+
+/* SITE */
+
+    URL:
+        EN http://ocubom.github.com/en
+        ES http://ocubom.github.com/es
+
+    Languajes:
+        en_US, es_ES
+
+    Last update:
+        2018-09-01
+
+    Standards:
+        HTML5 & CSS3
+
+    Frontend:
+        Academic Theme
+
+    Software:
+        Gimp, Git, Hugo, Inkscape, Sublime Text

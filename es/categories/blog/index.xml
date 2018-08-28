@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blog on Oscar Cubo Medina</title><link>http://ocubom.github.com/es/categories/blog/</link><description>Recent content in Blog on Oscar Cubo Medina</description><generator>Hugo -- gohugo.io</generator><language>es</language><copyright>&amp;nbsp;&amp;copy;&amp;nbsp;Oscar&amp;nbsp;Cubo&amp;nbsp;Medina,&amp;nbsp;2000&amp;nbsp;&amp;mdash;&amp;nbsp;{year}&amp;nbsp;</copyright><lastBuildDate>Sun, 26 Aug 2018 10:23:05 +0200</lastBuildDate><atom:link href="http://ocubom.github.com/es/categories/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>¡ Hola Mundo !</title><link>http://ocubom.github.com/es/post/hello-world/</link><pubDate>Sun, 26 Aug 2018 10:23:05 +0200</pubDate><guid>http://ocubom.github.com/es/post/hello-world/</guid><description>&lt;p&gt;Por segunda vez, quizá creando tradición, vamos a conservar el título de la entrada de ejemplo en cualquier gestor de contenidos. Esta es la primera entrada de un segundo reinicio y vamos a copiar la idea de aquel &lt;a href=&#34;//ocubom.wordpress.com/hola-mundo/&#34; title=&#34;ocubom&#39;s blog: ¡Hola mundo!&#34;&gt;¡Hola Mundo!&lt;/a&gt; que escribí &lt;time class=&#34;timeago&#34; datetime=&#34;2008-02-25T00:00:00Z&#34;&gt;en el ya lejano año 2008&lt;/time&gt;: resumir cómo hemos llegado aquí y qué podemos esperar a partir de ahora.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;Ha pasado mucho tiempo desde la última vez que escribí una entrada en &lt;a href=&#34;//ocubom.wordpress.com/&#34; title=&#34;ocubom&#39;s blog — Libro de notas en orden caótico e inexistente&#34;&gt;mi blog&lt;/a&gt;, un largo parón originado por un sinfín de causas en general y por ninguna en particular.
+Sin embargo, hoy es el día en el que vuelvo a retomar esta faceta con ganas renovadas y, esperemos, que sea durante mucho tiempo.&lt;/p&gt;
+&lt;p&gt;Para un reinicio quizá lo más adecuado sea empezar tratando cómo se ha llegado a reactivar el sitio.&lt;/p&gt;
+&lt;h2 id=&#34;en-busca-de-las-herramientas-perdidas&#34;&gt;En busca de las herramientas perdidas&lt;/h2&gt;
+&lt;p&gt;Desde hace varios meses, tras pasar una convulsa etapa, planeaba la idea de reactivar tanto de la web como del blog.
+Sin embargo, las herramientas no ayudaban y el tiempo/ganas no sobraban con lo que la idea no acababa de cuajar.
+Parecía que se iba a prolongar el estado de stand-by indefinido&lt;/p&gt;
+&lt;p&gt;Hace unas pocas semanas, por temas de trabajo, dí con &lt;a href=&#34;//gohugo.io&#34; title=&#34;Hugo&#34;&gt;Hugo&lt;/a&gt;, un generador de sitios estáticos progamado en &lt;a href=&#34;//golang.org&#34;&gt;Go&lt;/a&gt;.
+Algo captó mi atención y decidí investigar un poco más&amp;hellip; y me dí cuenta que había encontrado la pieza que faltaba para materializar la idea.&lt;/p&gt;
+&lt;p&gt;¿Qué vi en Hugo para que me decidiera?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Hugo es un pequeño programa disponible para todos los sistemas operativos y que no necesita ningún tipo de instalación.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Permite escribir en &lt;a href=&#34;//daringfireball.net/projects/markdown/&#34;&gt;Markdown&lt;/a&gt;, algo que echaba muchísimo de menos en el blog bajo WordPress.com.&lt;/p&gt;
+&lt;p&gt;En los últimos tiempos, Markdown se ha convertido en el marcado que utilizo intensivamente para casi todo.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Y, por último pero no menos importante, entre las plantillas disponibles encontré dos que me gustaban pero &lt;a href=&#34;//sourcethemes.com/academic/&#34;&gt;Academic&lt;/a&gt; acabó por decidirme.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Tenía todo lo que podía necesitar así que me puse manos a la obra y en un par de días tenía preparado el esqueleto de todo el sitio y este artículo.
+Sólo faltaba empujarlo al repositorio para culminar la reactivación.&lt;/p&gt;
+&lt;h2 id=&#34;y-ahora-qué&#34;&gt;Y ahora, ¿qué?&lt;/h2&gt;
+&lt;p&gt;Aunque ahora mi sitio tiene el blog incorporado, al revés que en ocasiones anteriores, voy a mantener &lt;a href=&#34;//ocubom.wordpress.com&#34;&gt;ocubom&amp;rsquo;s blog&lt;/a&gt;.
+Quedará como referencia y los artículos se podrán consultar pero no habrá más contenido.&lt;/p&gt;
+&lt;p&gt;Todo el nuevo contenido que cree se publicará en este sitio.
+Probablemente, republique aquí los artículos más relevantes del viejo blog posiblemente actualizándolos para tener junta toda la información relevante.&lt;/p&gt;
+&lt;p&gt;¿Qué se puede esperar de este blog? Mi seña de identidad: Ciencia, informática, música, libros y nuevas tecnologías en orden caótico–inexistente.&lt;/p&gt;
+&lt;p&gt;Bienvenidos a este nuevo viaje aunque desconozcamos el destino.&lt;/p&gt;</description></item></channel></rss>

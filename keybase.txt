@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/ocubom
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://ocubom.github.com
+  * I am ocubom (https://keybase.io/ocubom) on keybase.
+  * I have a public key ASDRysLjOlL_84JB5M7XA_mw8oh51UzE7011wTh2ZU5znQo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120d1cac2e33a52fff38241e4ced703f9b0f28879d54cc4ef4d75c13876654e739d0a",
+      "host": "keybase.io",
+      "kid": "0120d1cac2e33a52fff38241e4ced703f9b0f28879d54cc4ef4d75c13876654e739d0a",
+      "uid": "05a6b4d0e436b5af7c7b4e45dc731f19",
+      "username": "ocubom"
+    },
+    "merkle_root": {
+      "ctime": 1535480258,
+      "hash": "f588a339c2f5e7dd504460553f5dd66c7a3b458d81fc0aa56ebe447c69bd58408c03e9ea76882a0a4db5c4124e8e130afa307c4f3b84dfa3f38c49b46e4d1b99",
+      "hash_meta": "99c7d14186a1717964b3e96593fff0fc8e286de5b0bdc7c3aecb472027ee00b9",
+      "seqno": 3528450
+    },
+    "service": {
+      "entropy": "Jyh6iz86j8yZjS1tPGkkKhH/",
+      "hostname": "ocubom.github.com",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "2.5.0"
+  },
+  "ctime": 1535480268,
+  "expire_in": 504576000,
+  "prev": "bfc9d58dda434e035d2175c55c46b1b0367c563d9a61ebce48e13c89f05fbf4b",
+  "seqno": 13,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg0crC4zpS//OCQeTO1wP5sPKIedVMxO9NdcE4dmVOc50Kp3BheWxvYWTESpcCDcQgv8nVjdpDTgNdIXXFXEaxsDZ8Vj2aYevOSOE8ifBfv0vEINPgRunTz3T6hj+webMEUkOPnly6FGKFA4QOBeW5aIX3AgHCo3NpZ8RAIz2eBLDZ0E2JIYaaq3MjzHryxr/xKdeKZ7koTDfCb9910vFBg7LDOrlIlAMb/AwoMGyHOM53/upf03XBcxHCCqhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIF2vIgHfLJgCf1dwM7spw/HwJdQb0y2v1fRebuRHchSUo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/ocubom
+
+==================================================================

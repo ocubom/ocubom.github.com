@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Apt on Oscar Cubo Medina</title><link>http://ocubom.github.io/es/tags/apt/</link><description>Recent content in Apt on Oscar Cubo Medina</description><generator>Hugo -- gohugo.io</generator><language>es</language><copyright>&amp;nbsp;&amp;copy;&amp;nbsp;Oscar&amp;nbsp;Cubo&amp;nbsp;Medina,&amp;nbsp;2000&amp;nbsp;&amp;mdash;&amp;nbsp;{year}&amp;nbsp;</copyright><lastBuildDate>Wed, 19 Sep 2018 20:39:38 +0200</lastBuildDate><atom:link href="http://ocubom.github.io/es/tags/apt/index.xml" rel="self" type="application/rss+xml"/><item><title>Configurando repositorios de terceros en Debian 9 «Stretch»</title><link>http://ocubom.github.io/es/post/third-party-repositories-debian-9/</link><pubDate>Wed, 19 Sep 2018 20:39:38 +0200</pubDate><guid>http://ocubom.github.io/es/post/third-party-repositories-debian-9/</guid><description>&lt;p&gt;En el trabajo se avecina una época de cambios radicales.
+Para anticiparnos llevamos algunas semanas diseñando, investigando y realizando todo tipo de preparativos.&lt;/p&gt;
+&lt;p&gt;Entre las tareas, tocaba preparar algunas máquinas nuevas para reemplazar el último servidor monolítico que aún presta servicio tras más de 10 años, cientos de actualizaciones, varias migraciones tanto de software como de hardware, alguna mudanza (literalmente, transportado entre edificios del campus en el maletero de un coche) y una conversión de físico a virtual a sus espaldas.
+Así que me puse manos a la obra y preparé una instalación desatendida de &lt;a href=&#34;//debian.org&#34; title=&#34;Debian&#34;&gt;Debian 9 «Stretch»&lt;/a&gt;, la última versión liberada, para ir desgajando el servidor en varios &amp;ldquo;micro—servicios&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;Uno los servicios se pretende montar sobre &lt;a href=&#34;//symfony.com/&#34; title=&#34;Symfony&#34;&gt;Symfony 4&lt;/a&gt; que tiene como requisito mínimo PHP 7.1.3 mientras que Debian distribuye PHP 7.0.30. También son necesarios &lt;a href=&#34;//nodejs.org/&#34; title=&#34;Node.js&#34;&gt;Node.js&lt;/a&gt; junto a &lt;a href=&#34;//yarnpkg.com/&#34; title=&#34;Yarn&#34;&gt;Yarn&lt;/a&gt; que no se encuentran en los repositorios oficiales de Debian.
+Tocaba añadir algunos repositorios de terceros que proporcionaran esos paquetes.&lt;/p&gt;
+&lt;p&gt;Sin embargo, tras configurar como siempre los repositorios, falla la comprobación de una firma.
+Buscando qué podía pasar, descubro que hay una nueva forma de gestionar los repositorios pero que, como aplicamos cual robot descerebrado las recetas de siempre repetidas hasta la saciedad en blogs/FAQ/tutoriales desfasados, había pasado completamente desapercibida en la documentación oficial.&lt;/p&gt;
+&lt;p&gt;Así que me planteé describir la nueva forma para arrojar un poco más de luz. Aunque está orientado a Debian probablemente sea de aplicación a todas las distribuciones derivadas de ella (Ubuntu, Mint…) pero es imprescindible leer la documentación o manuales al respecto.&lt;/p&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+&lt;p&gt;Este artículo está plagado de simplificaciones ya que el objetivo es ser una referencia sencilla de fácil comprensión y no una detallada e intrincada explicación técnica.&lt;/p&gt;
+&lt;p&gt;Para quienes estén interesados en profundizar en los distintos aspectos, se proporcionan enlaces a la documentación.&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 id=&#34;repositorios-en-debian&#34;&gt;Repositorios en Debian&lt;/h2&gt;
+&lt;p&gt;Simplificando muchísimo, los repositorios en Debian suelen ser webs (aunque pueden usarse otros protocolos) que proporcionan los distintos paquetes junto a índices/metadatos que entiende APT.&lt;/p&gt;
+&lt;p&gt;Desde siempre, los repositorios que se querían utilizar se listaban en el fichero &lt;code&gt;/etc/apt/sources.list&lt;/code&gt; que, tras la instalación, suele tener cuatro o cinco fuentes en función de las elecciones tomadas en el instalador.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;deb http://deb.debian.org/debian stretch main non-free contrib
+deb-src http://deb.debian.org/debian stretch main non-free contrib
+deb http://deb.debian.org/debian-security stretch/updates main contrib non-free
+deb-src http://deb.debian.org/debian-security stretch/updates main contrib non-free
+# stretch-updates, previously known as &#39;volatile&#39;
+deb http://deb.debian.org/debian stretch-updates main contrib non-free
+deb-src http://deb.debian.org/debian stretch-updates main contrib non-free
+# stretch-backports, previously on backports.debian.org
+deb http://deb.debian.org/debian stretch-backports main contrib non-free
+deb-src http://deb.debian.org/debian stretch-backports main contrib non-free
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Si se necesitaban paquetes de otro repositorio, simplemente se añadían líneas al fichero, se actualizaba y los paquetes quedaban accesibles.
+Los repositorios proliferaron, habitualmente proporcionando paquetes que no cumplían las políticas para entrar en los oficiales o proporcionando versiones más actualizadas, llegando el punto en el que surgieron webs capaces de generar el fichero según los repositorios que el usuario elegía de una inmensa lista&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:sources-generators&#34;&gt;&lt;a href=&#34;#fn:sources-generators&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;Según se añaden más y más repositorios, el fichero crece en tamaño y complejidad, llegando a resultar poco manejable y muy propenso a errores.
+Para abordar este problema surge el directorio &lt;code&gt;/etc/apt/sources.list.d/&lt;/code&gt; en el que se podían añadir ficheros, con el mismo formato y extensión, que se cargaban como si se tratara del &lt;code&gt;/etc/apt/sources.list&lt;/code&gt;.
+Esto permitía organizar así los repositorios en varios grupos simplificando la gestión: podría desactivarse uno de ellos eliminando o cambiando la extensión sin necesidad de buscar y editar un fichero de cientos de líneas.&lt;/p&gt;
+&lt;p&gt;La práctica habitual es reservar el fichero &lt;code&gt;/etc/apt/sources.list&lt;/code&gt; para las entradas de los repositorios oficiales (básicamente, las que genera el instalador) y crear un fichero para cada repositorio de terceros en el directorio &lt;code&gt;/etc/apt/sources.list.d/&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;verificando-paquetes&#34;&gt;Verificando paquetes&lt;/h2&gt;
+&lt;p&gt;Otro de los aspectos importantes es verificar el origen y la integridad de los paquetes.
+Debian utiliza la firma digital basada en GPG desde el año 2005&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:apt-secure&#34;&gt;&lt;a href=&#34;#fn:apt-secure&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;:
+existe un fichero denominado &lt;code&gt;Releases&lt;/code&gt; que se distribuye junto a su firma (&lt;code&gt;Releases.gpg&lt;/code&gt;) mediante una clave que únicamente tiene el administrador del repositorio.&lt;/p&gt;
+&lt;p&gt;El fichero &lt;code&gt;Releases&lt;/code&gt; contiene un hash de comprobación de varios ficheros de metadatos que, a su vez, contienen otros hashes cubriendo todos los ficheros de los paquetes distribuidos.
+Cualquier modificación en cualquier fichero hará que cambie su hash de comprobación, alterará alguno de los ficheros de metadatos y por lo tanto cambiará el fichero &lt;code&gt;Releases&lt;/code&gt; y su firma &lt;code&gt;Relases.gpg&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Cada vez que se descarga algo del repositorio, se verifica la firma de este fichero y los distintos hashes de comprobación. En el caso de que alguno no coincida, se asume que está comprometido y no se utiliza en el proceso de instalación o actualización de paquetes.&lt;/p&gt;
+&lt;p&gt;Este mecanismo, ampliamente utilizado en informática, permite verificar que los paquetes son los que deberían ser, pero deja un asunto pendiente: la gestión de la confianza en las claves de firma de los distintos repositorios.&lt;/p&gt;
+&lt;p&gt;Esta gestión se realizaba mediante la herramienta &lt;code&gt;apt-key&lt;/code&gt; (un recubrimiento de GPG). En las instrucciones para añadir el repositorio se solía indicar la forma de obtener la clave pública GPG que, normalmente, se dejaba en la raíz del repositorio consultable por HTTP o se subía a algún servidor de claves, y cómo confiar en ella.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;wget -qO - http://thirdparty.example.com/archive.key | sudo apt-key add -
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Inicialmente &lt;code&gt;apt-key&lt;/code&gt; almacena esta información en un llavero GPG situado en &lt;code&gt;/etc/apt/trusted.gpg&lt;/code&gt;, que contiene todas las claves de confianza. Cuando APT realiza la verificación de cualquier firma, comprueba si está generada por alguna de las claves de confianza registradas en el fichero para decidir si se considera válido o no.&lt;/p&gt;
+&lt;p&gt;De manera similar a la aparición del directorio &lt;code&gt;/etc/apt/sources.list.d/&lt;/code&gt;, aparece el directorio &lt;code&gt;/etc/apt/trusted.gpg.d/&lt;/code&gt; para poder tener cada clave por separado en lugar de tener que gestionar el llavero añadiendo/borrando claves, un paralelismo evidente.&lt;/p&gt;
+&lt;h2 id=&#34;nuevo-sistema&#34;&gt;Nuevo sistema&lt;/h2&gt;
+&lt;p&gt;Entre los ficheros &lt;code&gt;/etc/apt/sources.list&lt;/code&gt; y &lt;code&gt;/etc/apt/trusted.gpg&lt;/code&gt; (y sus variantes en directorio) existe una pequeña y sutil diferencia que genera serias implicaciones:
+las listas de repositorios son claramente globales para toda la instalación mientras que las claves son de aplicación para un repositorio concreto.
+Sin embargo, tanto el fichero &lt;code&gt;/etc/apt/trusted.gpg&lt;/code&gt; como el directorio &lt;code&gt;/etc/apt/trusted.gpg.d/&lt;/code&gt;, tienen carácter global:
+una clave almacenada en ellos validará cualquier repositorio.&lt;/p&gt;
+&lt;p&gt;Lo ideal sería indicar de manera unívoca qué clave debe utilizarse para validar las firmas de cada repositorio. Y ahora es posible, aunque hay que cambiar ligeramente la forma de trabajar&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:apt-use-third-party&#34;&gt;&lt;a href=&#34;#fn:apt-use-third-party&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;El primer cambio: no se utilizará &lt;code&gt;apt-key&lt;/code&gt; (&lt;code&gt;/etc/apt/trusted.gpg&lt;/code&gt;) o el directorio &lt;code&gt;/etc/apt/trusted.gpg.d/&lt;/code&gt;. En su lugar las claves públicas se almacenarán en &lt;code&gt;/usr/share/keyrings/&lt;/code&gt; como una clave GPG binaria&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:why-this-article&#34;&gt;&lt;a href=&#34;#fn:why-this-article&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;. Estas claves se podrán obtener desde la raíz del repositorio (en un fichero denominado &lt;code&gt;[repo]-archive-keyring.gpg&lt;/code&gt;) o desde algún servidor de claves.&lt;/p&gt;
+&lt;p&gt;El segundo cambio es que es necesario indicar expresamente la clave de firma utilizada en cada repositorio, añadiendo el parámetro &lt;code&gt;signed-by&lt;/code&gt; a las entradas en el &lt;code&gt;/etc/apt/sources.list.d/&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;deb [signed-by=/usr/share/keyrings/thirdparty-archive-keyring.gpg] https://thirdparty.example.com/debian/ stable main
+deb-src [signed-by=/usr/share/keyrings/thirdparty-archive-keyring.gpg] https://thirdparty.example.com/debian/ stable main
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Aunque es posible añadir la opción en los ficheros &lt;code&gt;.list&lt;/code&gt; existentes, existe un nuevo formato para definir los repositorios que está recomendado.&lt;/p&gt;
+&lt;h3 id=&#34;el-formato-deb822&#34;&gt;El formato deb822&lt;/h3&gt;
+&lt;p&gt;En lugar de entradas &lt;code&gt;deb&lt;/code&gt;&amp;nbsp;/&amp;nbsp;&lt;code&gt;deb-src&lt;/code&gt; en un fichero &lt;code&gt;.list&lt;/code&gt;, está recomendado utilizar el formato &lt;a href=&#34;//manpages.debian.org/stretch/apt/sources.list.5.en.html#THE_DEB_AND_DEB-SRC_TYPES:_GENERAL_FORMAT&#34;&gt;deb822&lt;/a&gt; para definir los repositorios a incluir.&lt;/p&gt;
+&lt;p&gt;Basta con crear un fichero con extensión &lt;code&gt;.sources&lt;/code&gt; en el directorio &lt;code&gt;/etc/apt/sources.list.d/&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;Types : deb deb-src
+URIs : https://thirdparty.example.com/debian/
+Suites : stable
+Components : main
+Signed-By : /usr/share/keyrings/thirdparty-archive-keyring.gpg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;El formato es más conciso y mucho más potente al generar el producto cartesiano de todas las opciones. Esto redunda en una menor probabilidad de error.&lt;/p&gt;
+&lt;p&gt;Usando uno de los &lt;a href=&#34;//manpages.debian.org/stretch/apt/sources.list.5.en.html#EXAMPLES&#34;&gt;ejemplos de página man sources.list (5)&lt;/a&gt;, el fichero &lt;code&gt;.sources&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;Types : deb deb-src
+URIs : http://deb.debian.org/debian
+Suites : stable testing unstable
+Components : main contrib non-free
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;equivale al fichero &lt;code&gt;.list&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;deb http://deb.debian.org/debian stable main contrib non-free
+deb-src http://deb.debian.org/debian stable main contrib non-free
+deb http://deb.debian.org/debian testing main contrib non-free
+deb-src http://deb.debian.org/debian testing main contrib non-free
+deb http://deb.debian.org/debian unstable main contrib non-free
+deb-src http://deb.debian.org/debian unstable main contrib non-free
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Evidentemente, existe una mayor probabilidad de introducir un error en el fichero &lt;code&gt;.list&lt;/code&gt; al tener que duplicar múltiples veces la misma información (la URI aparece seis veces). Si se añaden otros parámetros (el &lt;code&gt;signed-by&lt;/code&gt; para indicar la clave de firma o la arquitectura&amp;hellip;), la probabilidad aumenta exponencialmente.&lt;/p&gt;
+&lt;h3 id=&#34;conversión&#34;&gt;Conversión&lt;/h3&gt;
+&lt;p&gt;Como este mecanismo es bastante nuevo, es habitual encontrarse con repositorios que siguen distribuyendo claves para descargar en &lt;code&gt;/etc/apt/trusted.gpg.d/&lt;/code&gt; o, incluso, que explican como añadirlas al fichero &lt;code&gt;/etc/apt/trusted.gpg&lt;/code&gt; utilizando &lt;code&gt;apt-key&lt;/code&gt;. En los peores casos se proporciona un script que automatiza el registro del repositorio y de la clave asociada usando alguno de estos métodos, ocultando las direcciones en el proceso, y que es necesario analizar para poder realizar la conversión.&lt;/p&gt;
+&lt;p&gt;Cuando se tiene la URL de la clave pública en cualquier formato es relativamente trivial almacenarla como un fichero GPG binario (el ejemplo usa &lt;code&gt;wget&lt;/code&gt; aunque se puede usar &lt;code&gt;curl&lt;/code&gt; o cualquier otro mecanismo para descargar el fichero):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;wget -qO - http://thirdparty.example.com/debian/thirdparty.gpg | gpg --no-default-keyring --keyring /tmp/thirdparty.gpg --import
+gpg --no-default-keyring --keyring /tmp/thirdparty.gpg --export --output /usr/share/keyrings/thirdparty-archive-keyring.gpg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Si se distribuye a través de un servidor de claves el proceso es ligeramente diferente:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;gpg --no-default-keyring --keyring /tmp/thirdparty.gpg --keyserver keyserver.example.com --recv-keys [FINGERPRINT]
+gpg --no-default-keyring --keyring /tmp/thirdparty.gpg --export --output /usr/share/keyrings/thirdparty-archive-keyring.gpg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;En ambos casos, el fichero almacenado en &lt;code&gt;/tmp/thirdparty.gpg&lt;/code&gt; puede eliminarse sin problemas tras exportar la clave.&lt;/p&gt;
+&lt;h2 id=&#34;conclusión&#34;&gt;Conclusión&lt;/h2&gt;
+&lt;p&gt;En resumen, para registrar un repositorio de terceros basta con crear un fichero en &lt;code&gt;/etc/apt/sources.list.d/[reponame].sources&lt;/code&gt; con el formato deb822 indicando la clave de firma del mismo (opción &lt;code&gt;Signed-By&lt;/code&gt;) que se almacenará en &lt;code&gt;/usr/share/keyrings/[reponame]-archive-keyring.gpg&lt;/code&gt; en formato GPG binario. También es posible hacerlo creando el fichero &lt;code&gt;/etc/apt/sources.list.d/[reponame].list&lt;/code&gt; con entradas tipo &lt;code&gt;deb&lt;/code&gt; o &lt;code&gt;deb-src&lt;/code&gt; con dicha opción, aunque está recomendado utilizar el nuevo formato.&lt;/p&gt;
+&lt;p&gt;En cualquier caso, hay que tener precaución antes de instalar paquetes de fuentes desconocidas. Esos paquetes pueden modificar el sistema de manera no deseada y acarrear serios problemas de seguridad o, incluso, legales. Es necesario aplicar el sentido común y entender las implicaciones antes de realizar este tipo de modificación en un sistema.&lt;/p&gt;
+&lt;p&gt;Por último, una pequeña reflexión. Cuando se busca información sobre este tema es muy habitual encontrar documentación o tutoriales escritos hace más de 10 años centrados en &lt;code&gt;apt-key&lt;/code&gt; (la herramienta usada por aquel entonces) y repetidos constantemente en todo tipo de medios. Es importante fijarse en la fecha de publicación para saber si es posible que la información esté desfasada y contrastarla con publicaciones más recientes (cuidado con el copy&amp;nbsp;&amp;amp;&amp;nbsp;paste) y la documentación oficial. Esto se aplica a todo: probablemente este artículo dentro de 10 años quede desfasado y carezca de validez.&lt;/p&gt;
+&lt;h2 id=&#34;ejemplos&#34;&gt;Ejemplos&lt;/h2&gt;
+&lt;p&gt;Estos son algunos pequeños scripts que utilizo para configurar repositorios en mis máquinas. Normalmente los uso más como recordatorio o base y suelen requerir algún tipo de modificación.&lt;/p&gt;
+&lt;div class=&#34;alert alert-warning&#34;&gt;
+&lt;p&gt;Estos scripts precisan ejecutar como root. Antes de ejecutar cualquier tipo de código con esos permisos es necesario comprender las implicaciones.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;alert alert-warning&#34;&gt;
+&lt;p&gt;Los scripts se proporcionan como ejemplos y sin garantía de ningún tipo. No me hago responsable de que funcionen como es debido o de los daños de cualquier tipo ocasionados por su uso.&lt;/p&gt;
+&lt;/div&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/ocubom/e13849fe395c7e33c129284994fed46b.js&#34;&gt;&lt;/script&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:sources-generators&#34;&gt;Aunque algunos de los generadores iniciales han dejado de existir, surgen nuevas alternativas como &lt;a href=&#34;//debgen.simplylinux.ch/&#34;&gt;Debian Sources List Generator&lt;/a&gt; o &lt;a href=&#34;//repogen.simplylinux.ch/&#34;&gt;Ubuntu Sources List Generator&lt;/a&gt; en las que se pueden ver la ingente cantidad de repositorios que pueden añadirse a estas distribuciones que conocen estas herramientas.
+&lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:sources-generators&#34;&gt;&lt;sup&gt;^&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:apt-secure&#34;&gt;La información detallada sobre este mecanismo se puede leer en &lt;a href=&#34;//wiki.debian.org/SecureApt&#34;&gt;Secure Apt&lt;/a&gt;.
+&lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:apt-secure&#34;&gt;&lt;sup&gt;^&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:apt-use-third-party&#34;&gt;La nueva forma de &lt;a href=&#34;https://wiki.debian.org/DebianRepository/UseThirdParty&#34;&gt;añadir un repositorio de terceros en Debian&lt;/a&gt; está descrita en la documentación oficial del proyecto.
+&lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:apt-use-third-party&#34;&gt;&lt;sup&gt;^&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:why-this-article&#34;&gt;Justamente este es el punto que me llevó a descubrir esta solución. Al añadir un repositorio bajé esta clave binaria y la añadí a &lt;code&gt;/etc/apt/trusted.gpg.d/&lt;/code&gt;. Al ser un formato inválido, la ignoraba generando errores en la verificación de las firmas.
+&lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:why-this-article&#34;&gt;&lt;sup&gt;^&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description></item></channel></rss>
